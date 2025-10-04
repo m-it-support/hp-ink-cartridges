@@ -1,50 +1,116 @@
+// =================================================================
+// START: index.html General
+// =================================================================
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HP Ink Cartridges</title>
-  <link rel="icon" href="https://lh3.googleUserContent.com/d/1oSaAKn5MSKdUHx8EPMPiSXbiv-ybIZR8" type="image/x-icon">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-    .iframe-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    .loader {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      color: #666;
-      z-index: 10;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HP Ink Cartridges</title>
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1oSaAKn5MSKdUHx8EPMPiSXbiv-ybIZR8" type="image/x-icon">
+
+    <style>
+        /* ตั้งค่าพื้นฐานให้เต็มหน้าจอและไม่มี scrollbar */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* ซ่อน scrollbar ที่ไม่จำเป็น */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5; /* เพิ่มสีพื้นหลังอ่อนๆ */
+        }
+
+        /* Container สำหรับ iframe ให้เต็มพื้นที่ */
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* 100% ของความสูงหน้าจอ */
+        }
+
+        /* Iframe ที่จะแสดงผลเว็บแอป */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* ไม่มีเส้นขอบ */
+            opacity: 0; /* ซ่อนไว้ตอนแรก */
+            transition: opacity 0.5s ease-in-out; /* เพิ่ม animation ตอนแสดงผล */
+        }
+
+        /* ทำให้ iframe แสดงผลเมื่อโหลดเสร็จ */
+        iframe.loaded {
+            opacity: 1;
+        }
+
+        /* ส่วนของ Loading Animation (Spinner) */
+        .loader-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.5s ease-out; /* animation ตอนหายไป */
+        }
+
+        .loader {
+            border: 6px solid #e0e0e0; /* สีวงกลมพื้นหลัง */
+            border-top: 6px solid #3498db; /* สีของส่วนที่หมุน */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite; /* ทำให้หมุนตลอดเวลา */
+        }
+        
+        /* ซ่อน loader เมื่อโหลดเสร็จ */
+        .loader-wrapper.hidden {
+            opacity: 0;
+            pointer-events: none; /* ทำให้คลิกทะลุได้เมื่อซ่อนอยู่ */
+        }
+
+        /* Keyframes สำหรับการหมุน */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <div class="iframe-container">
-    <div class="loader" id="loader">Loading app...</div>
-    <iframe 
-      src="https://script.google.com/macros/s/AKfycbwd-AVeVOA8juFjysRF_SqNnxv-jbCBtIbAhgCGM1Y_dEsn5_7dL5-WXRfqmu4X7M4-/exec" 
-      title="M-IT Support"
-      onload="document.getElementById('loader').style.display='none';"
-      allowfullscreen>
-    </iframe>
-  </div>
+
+    <div class="iframe-container">
+        <div class="loader-wrapper" id="loader">
+            <div class="loader"></div>
+        </div>
+
+        <iframe 
+            id="app-iframe"
+            src="https://script.google.com/macros/s/AKfycbwAsunnSZ9SSr2NJwSvsvfjqt3R5yYv6IIqAn6eius-pgsJwT6MIOgwAm4PFcwXGB2m/exec" 
+            title="HP Ink Cartridges"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+    <script>
+        // เลือก element ที่ต้องการ
+        const iframe = document.getElementById('app-iframe');
+        const loader = document.getElementById('loader');
+
+        // เมื่อ iframe โหลดเนื้อหาเสร็จสมบูรณ์
+        iframe.addEventListener('load', function() {
+            // 1. เพิ่ม class 'hidden' ให้กับ loader เพื่อให้มัน fade out หายไป
+            loader.classList.add('hidden');
+            
+            // 2. เพิ่ม class 'loaded' ให้กับ iframe เพื่อให้มัน fade in แสดงขึ้นมา
+            iframe.classList.add('loaded');
+        });
+    </script>
+
 </body>
 </html>
+// =================================================================
+// END: index.html General
+// =================================================================
 
 
